@@ -9,7 +9,7 @@ const loginControler = async (req, res) => {
     if (!email || !password) {
         return res.status(400).json({ message: 'Some required fields are missing' });
     }
-    const user = await UserService.getByUserName(email);
+    const user = await UserService.getByEmail(email);
     if (!user || user.password !== password) {
         return res.status(400).json({ message: 'Invalid fields' });
     }

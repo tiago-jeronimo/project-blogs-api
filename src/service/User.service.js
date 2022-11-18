@@ -1,12 +1,11 @@
 const { User } = require('../models');
 
-const createUser = ({ displayName, password }) => User.create({ displayName, password });
+const createUser = ({ displayName, password, email, image }) =>
+  User.create({ displayName, password, email, image });
 
-createUser({ displayName: 'Anderson', password: '123456' });
-
-const getByUserName = (email) => User.findOne({ where: { email } });
+const getByEmail = (email) => User.findOne({ where: { email } });
 
 module.exports = {
-    getByUserName,
-    createUser,
- };
+  getByEmail,
+  createUser,
+};
