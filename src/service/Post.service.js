@@ -8,6 +8,12 @@ const addPost = async ({ title, content, userId, categoryIds }) => {
     return result;
 };
 
+const getAllPost = () => BlogPost.findAll({
+    include: { all: true, attributes: { exclude: ['password'] } },
+    attributes: { exclude: ['user_id'] },
+});
+
 module.exports = {
     addPost,
+    getAllPost,
 };
