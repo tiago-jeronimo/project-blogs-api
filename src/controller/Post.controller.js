@@ -52,10 +52,21 @@ const addPost = async (req, res) => {
         const postUpdate = await PostService.updatePost({ title, content }, id);
         return res.status(200).json(postUpdate);
       };
+      const postDelet = async (req, res) => {
+        const { id } = req.params;
+        const result = await PostService.getById(id);
+        if (!result) return res.status(404).json({ message: 'Post does not exist' });
+         if (req.user.id !== result.userId) {
+         return res.status(401).json({ message: 'Unauthorized user' });
+    }
+        await PostService.postDelet(id);
+     return res.status(204).send();
+      };
 
 module.exports = {
     addPost,
     getAllPost,
     getById,
     updatePostById,
+    postDelet,
 };
