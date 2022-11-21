@@ -1,26 +1,27 @@
-require('dotenv/config');
 const jwt = require('jsonwebtoken');
+require('dotenv/config');
 const UserService = require('../service/User.service');
 
-const worldSecret = process.env.JWT_SECRET || 'suaSenhaSecreta';
+const secret = process.env.JWT_SECRET || 'suaSenhaSecreta';
 
 module.exports = async (req, res, next) => {
-    const token = req.header('Authorization');
+  const token = req.header('Authorization');
 
-    if (!token) {
-        return res.status(401).json({ message: 'Token not found' });
-         }
+  if (!token) {
+    return res.status(401).json({ message: 'Token not found' });
+  }
 
-    try {
-        const decoded = jwt.verify(token, worldSecret);
-        const response = await UserService.getByEmail(decoded.data.email);
+  try {
+    const decoded = jwt.verify(token, secret);
 
-        if (!response) {
-            return res.status(401).json({ message: 'Expired or invalid token' });
-        }
-        req.response = response;
-        next();
-    } catch (error) {
-        return res.status(401).json({ message: 'Expired or invalid token' });
+    const response = await UserService.getByEmail(decoded.data.email);
+
+    if (!response) {
+      return res.status(401).json({ message: 'Expired or invalid token' });
     }
+    req.user = response;
+    next();
+  } catch (err) {
+    return res.status(401).json({ message: 'Expired or invalid token' });
+  }
 };

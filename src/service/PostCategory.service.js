@@ -1,7 +1,9 @@
 const { PostCategory } = require('../models');
 
-const createPostCategory = ({ postId, categoryId }) => {
-    PostCategory.create({ postId, categoryId });
+const addPostCategory = ({ postId, categoryId }) => {
+  PostCategory.create({ postId, categoryId });
 };
 
-module.exports = { createPostCategory };
+module.exports = {
+  addPostCategory,
+};
