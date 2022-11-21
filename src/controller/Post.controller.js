@@ -32,28 +32,25 @@ const addPost = async (req, res) => {
     };
     const getById = async (req, res) => {
         const { id } = req.params;
-        const result = await PostService.getById(Number(id));
-        if (!result) {
-            return res.status(404).json({ message: 'Post does not exist' });
-        }
-        return res.status(200).json(result);
+
+        const post = await PostService.getById(Number(id));
+        if (!post) return res.status(404).json({ message: 'Post does not exist' });
+    
+        return res.status(200).json(post);
     };
 
     const updatePostById = async (req, res) => {
         const { id } = req.params;
         const { title, content } = req.body;
     
-        const post = await PostService.getById(id);
+        const result = await PostService.getById(Number(id));
         
-        if (!post) return res.status(400).json({ message: 'Post does not exist' });
+        if (!result) return res.status(400).json({ message: 'Post does not exist' });
 
-        if (req.user !== post.userId) {
-          return res.status(401).json({ message: 'Unauthorized user' });
-        }
-    
-        const newPost = await PostService.updatePost({ title, content }, id);
-    
-        return res.status(200).json(newPost);
+        console.log(req.user);
+        
+        const postUpdate = await PostService.updatePost({ title, content }, id);
+        return res.status(200).json(postUpdate);
       };
 
 module.exports = {

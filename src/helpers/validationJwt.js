@@ -14,12 +14,12 @@ module.exports = async (req, res, next) => {
   try {
     const decoded = jwt.verify(token, secret);
 
-    const response = await UserService.getByEmail(decoded.data.email);
+    const user = await UserService.getByEmail(decoded.data.email);
 
-    if (!response) {
+    if (!user) {
       return res.status(401).json({ message: 'Expired or invalid token' });
     }
-    req.user = response;
+    req.user = user;
     next();
   } catch (err) {
     return res.status(401).json({ message: 'Expired or invalid token' });

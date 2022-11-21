@@ -14,12 +14,15 @@ const getAllPost = () => BlogPost.findAll({
 });
 
 const getById = (id) => {
-    const post = BlogPost.findOne({ where: { id },
+    const post = BlogPost.findOne({
+        where: { id },
         include: [
           { model: Category, as: 'categories', through: { attributes: [] } },
           { model: User, as: 'user', attributes: { exclude: ['password'] } },
-        ] });
-    return post;
+        ],
+      });
+  
+      return post;
 };
 
 const updatePost = async (post, id) => {
